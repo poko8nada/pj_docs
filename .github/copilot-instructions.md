@@ -1,137 +1,58 @@
 You are a programming expert.
 
-## Prerequisites
-
-### 1. Language Policy
+## Language and Communication Policy
 
 - Always think, reason, and write code in English.
 - Always respond to user instructions and questions in **Japanese**, unless explicitly requested otherwise.
-- Use natural and fluent Japanese suitable for professional technical communication.
 - Do not translate variable names or identifiers into Japanese.
-
-### 2. Communication Guidelines
-
-- Keep user-facing content within 3 lines unless user requests detailed explanation
 - Use concise, telegraphic style to minimize response volume
-- Focus on actionable information and results
-- Avoid unnecessary explanations or commentary
+- Avoid unnecessary explanations, commentary and emojis
 
-### 3. File Management and Task Execution
+## Task Execution Policy
 
-- Always reference the following md files before implementation, even without specific instructions:
-  - `docs/*.md` contains basic requirements and specifications
-- Maintain traceability between requirements, tasks, and implementation
+### Boundaries
 
-### 4. Task Granularity Policy
+- Reference `docs/*.md` for requirements before implementation
+- Aim for a maximum of 5 files per task (creation/modification/deletion).
+- Ask first. Database schema changes, adding dependencies, modifying CI/CD config
+- Never commit secrets or API keys, edit `node_modules/` or `vendor/
 
-- Maximum of 5 files can be created, modified, or deleted per single task
-- This limit defines the maximum granularity for one task
-- When work requires changes to more than 5 files, split into multiple tasks
-- Ensure each task remains focused and manageable
+### Development Workflow
 
-### 5. Development and Testing Approach
+1. List tasks and files (create/modify/delete) → Get approval
+2. Run `pnpm test *.test.tsx`
+3. If tests fail → Investigate, propose fixes → Get approval → Execute fixes
+4. Create and ask staging files list and commit message → Get approval → `git add` and `git commit`
+5. Check off completed task in the task markdown file
 
-- Break down implementation into small, granular tasks
-- Start development environment after each small task completion
-- Verify intended behavior through testing before proceeding:
-  - Use Vitest for minimal unit tests colocated with source files:
-  - e.g., `*.test.tsx` next to components/hooks/actions
-- Confirm functionality matches expected outcomes:
-  - Focus on isolated tests of key logic: server actions, hooks, minimal clients in `_features/` with React Testing Library
-- Run tests via `npm test`: Vitest: `vitest.config.ts` with jsdom; scan `**/*.test.{ts,tsx}`
-- Prioritize server verification in page.tsx (mock fetches); isolate clients in `_features/`; avoid E2E, keep tests fast/granular
+## Tools
 
-### 6. Token Management and Task Continuity
+- Use pnpm as the package manager for all dependency management and script execution.
+- Except for universal best practices, always assume your knowledge is outdated and consult Context7 MCP tools.
+- The Context7 will automatically handle library ID resolution and documentation retrieval.
+- When developing with Next.js, actively use “Next-devtools”.
 
-- Monitor subtask workload and token consumption
-- When approaching 100k tokens, generate separate continuation task
-- Transfer all necessary information for persistence including:
-  - Completed work summary
-  - Current progress state
-  - Remaining tasks and context
-  - Implementation decisions made
-- Ensure seamless handoff between task segments
+## Testing Policy
 
-### 7. Solution Quality Standards
+- No E2E tests
+- Write minimal unit tests only
+- Test business logic and critical functions only
+- Skip UI components and trivial code
+- Place `*.test.ts(x)` files adjacent to source files
 
-- Avoid ad-hoc solutions (hardcoding, manual operation assumptions, etc.)
-- Design scalable and maintainable solutions from the beginning
-- Consider long-term implications of implementation choices
+### Running Tests
 
-### 8. Error Response Protocol
-
-- When user reports issues or unexpected errors occur during development:
-  - Do not immediately attempt fixes
-  - First analyze the situation thoroughly
-  - Present situation assessment and proposed solution options to user
-  - Wait for user confirmation before proceeding with implementation
-
-### 9. Documentation Creation Policy
-
-- Do not create implementation md files unless explicitly instructed by user
-- Do not ask user about documentation creation
-- Focus on code implementation over documentation unless specified
-
-### 10. Documentation Maintenance
-
-- Pause work at appropriate intervals to update project documentation
-- Update `md` that related to your tasks and documentation files in project
-- Maintain current status and progress tracking
-- Document implementation decisions and rationale
+```bash
+pnpm test              # Run all tests
+pnpm test *.test.tsx   # Run specific tests
+```
 
 ---
 
-## Git Workflow Rules
+## Standard Coding Rules
 
-### Commit Message Format
+### Boundaries
 
-```
-<type>: <description>
-```
-
-### Commit Types
-
-- **feat**: Add new features
-- **refactor**: Code restructuring and improvements
-- **fix**: Bug fixes
-- **update**: Update existing functionality
-- **style**: Styling and visual adjustments
-- **chore**: Maintenance and housekeeping tasks
-- **WIP**: Work in progress
-
-### Commit Message Guidelines
-
-- Use English for all commit messages
-- Use imperative mood (Add, Update, Implement, Fix, etc.)
-- Start description with lowercase letter
-- No period at the end
-- Be specific and concise about what was changed
-- Include component or file names when relevant
-- Use "and" to connect multiple related changes in one commit
-
-### Examples
-
-```
-feat: implement contact form and related refactorings
-refactor: enhance resume merging functionality and add skills support
-fix: update profile image dimensions in header component
-chore: update project files
-style: adjust typography for improved readability
-```
-
-### Branch Strategy
-
-- Use feature branches for new development
-- Follow naming convention: `feature/<feature-name>`
-- Merge to `develop` branch for integration
-- Use pull requests for code review process
-
----
-
-## Coding Rules
-
-- Use Next.js 15+ with App Router.
-- Prefer Server Actions over traditional API Routes.
 - Design by Functional Domain Modeling.
 - Use function. Do not use `class`.
 - Design types using Algebraic Data Types.
@@ -139,26 +60,54 @@ style: adjust typography for improved readability
 - Avoid deep nesting with `else` statements.
 - Handle error cases first with early return.
 
+### 3.1. Next.js 15+ App Router Component rules
+
+If using Next.js App Router:
+
+- **Server Components (default)**: `page.tsx`, `layout.tsx` are always server components
+- **Client Components**: Place in `_features/` or `_components` directory only, keep minimal
+- **Data flow**: Fetch data in Server Components, pass as props to Client Components
+- **Rationale**: Maximize server-side rendering, minimize client bundle size
+
 ### Type Safety Requirements
 
 - Never use `any` type. Always define explicit types.
+- Also, avoid "type assertions" (`as` keyword) as much as possible.
 - Resolve type errors immediately when they occur.
 - Use proper TypeScript utilities and type inference.
 - Prefer union types and discriminated unions for complex scenarios.
 
 ### Error Handling Strategy
 
-- Prefer `Result<T, E>` pattern over `throw` for error management in internal logic and domain functions.
-  - This enables explicit and type-safe error propagation.
-- For external operations (I/O, database, fetch, etc.), `try-catch` is acceptable.
-  - Always log errors to the console using `console.error(error)` in `catch` blocks.
-- Avoid using exceptions for control flow.
+- Avoid ad-hoc solutions (hardcoding, manual operations)
+- Design for scalability and maintainability
+- When errors occur: analyze first, propose solutions, wait for confirmation
 
-#### Result Example
+**Use Result<T, E> pattern for:**
+
+- Internal logic and domain functions
+- Server Actions returning success/error states
+- Hooks managing operation outcomes
+- Enables explicit, type-safe error propagation
+
+**Use try-catch for:**
+
+- External operations (I/O, database, fetch, file system)
+- Always log errors: `console.error(error)` in catch blocks
+
+**Never use exceptions for control flow**
+
+## Result Pattern Examples
+
+**Type Definition:**
 
 ```ts
 type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
+```
 
+**Domain Function:**
+
+```ts
 function parseId(input: unknown): Result<string, "Invalid ID"> {
   return typeof input === "string" && input !== ""
     ? { ok: true, value: input }
@@ -166,18 +115,56 @@ function parseId(input: unknown): Result<string, "Invalid ID"> {
 }
 ```
 
-#### External Error Example
+**Server Action:**
+
+```ts
+"use server";
+export async function createPost(
+  formData: FormData,
+): Promise<Result<Post, string>> {
+  const title = formData.get("title");
+  if (!title) return { ok: false, error: "Title required" };
+
+  try {
+    const post = await db.insert({ title });
+    return { ok: true, value: post };
+  } catch (error) {
+    console.error("DB error:", error);
+    return { ok: false, error: "Failed to create post" };
+  }
+}
+```
+
+**Hook Usage:**
+
+```ts
+function useCreatePost() {
+  const [result, setResult] = useState<Result<Post, string> | null>(null);
+
+  const create = async (formData: FormData) => {
+    const res = await createPost(formData);
+    setResult(res);
+    return res;
+  };
+
+  return { create, result };
+}
+```
+
+**External Operation:**
 
 ```ts
 try {
-  const res = await fetch(...);
+  const res = await fetch(url);
   if (!res.ok) {
     console.error("Fetch failed:", res.statusText);
     return { ok: false, error: "Fetch failed" };
   }
+  const data = await res.json();
+  return { ok: true, value: data };
 } catch (error) {
-  console.error("Unexpected error during fetch:", error);
-  return { ok: false, error: "Unexpected error" };
+  console.error("Network error:", error);
+  return { ok: false, error: "Network error" };
 }
 ```
 
@@ -185,59 +172,83 @@ try {
 
 ## Project Structure
 
+### Boundaries
+
+- **Colocation**: Route-specific files use `_prefix` (non-routed) and live within route directories
+- **Parallel routes**: Use `@folder` for multi-part layouts
+- **Dynamic routes**: Use `[param]` for dynamic segments
+- **Route Grouping**: Use `(group)` for related routes
+- **Features**:
+  - It is Large size Components that combine multiple smaller components, hooks, and logic
+  - File is named like `DisplayUserProfile.tsx` not `UserProfileFeature.tsx`
+  - Combine components in `_features/`; keep client logic minimal
+  - No nesting in features Use children in `app/` routing structure instead
+- **Global types**: Only truly universal types (e.g., Result<T, E>) go in `utils/types.ts`
+
+### Structure Example
+
 ```
 my-nextjs-app/
-├─ app/                          # App Router routing base (default: no src). Structure reflects routing; for feature placement. Primarily server components for async/await.
-│   ├ dashboard/                   # /dashboard route: parallel routes example for multi-part screens.
-│   │  ├ @modal/                   # Parallel route: modal part.
-│   │  │  └page.tsx               # Modal content (colocation: route-specific)
-│   │  ├@search/                  # Parallel route: search part.
-│   │  │  └page.tsx               # Search content (colocation)
-│   │  ├page.tsx                  # /dashboard main page (server component; fetch data here)
-│   │  ├ _components/              # Route-specific reusable UI (non-routed: _ prefix). No logic/process.
-│   │  │  ├ui─*.tsx               # Reusable UI (e.g., DashboardButton.tsx)
-│   │  │  └*.tsx                  # Feature UI (e.g., DashboardChart.tsx)
-│   │  ├ _features/                # Route-specific processing/rendering (colocation). Combine components; import to app routes.
-│   │  │  │                       # No nesting in features! Use children in app/. Client hooks OK; server OK. Keep clients small/minimal.
-│   │  │  └DashboardFeature.tsx   # e.g., Main feature (hooks/config integration; minimal client)
-│   │  ├ _hooks/                   # Route-specific hooks (colocation).
-│   │  │  └useDashboard.ts        # e.g., useSearch (config types)
-│   │  ├ _actions/                 # Route-specific server actions (colocation: non-routed). 'use server' mutations.
-│   │  │  ├actions.ts             # e.g., createDashboardItem(formData: FormData) { 'use server'; ... }
-│   │  │  └actions.test.ts        # Minimal unit tests colocated; mock DB/API for mutation success/error.
-│   │  └_config/                  # Route-specific config (colocation). Initial objects/types for hooks/actions.
-│   │      └dashboardConfig.ts    # e.g., API endpoints with types
+├─ app/                          # App Router: routing structure
+│   ├ dashboard/                 # Route: /dashboard
+│   │  ├ @modal/                 # Parallel route
+│   │  │  └page.tsx
+│   │  ├ @search/                # Parallel route
+│   │  │  └page.tsx
+│   │  ├ page.tsx                # Main page (server component)
+│   │  ├ _components/            # Route-specific UI
+│   │  ├ _features/              # Route-specific logic/rendering
+│   │  ├ _hooks/                 # Route-specific hooks
+│   │  ├ _actions/               # Route-specific server actions
+│   │  └ _config/                # Route-specific config
 │   │
-│   ├blog/                        # /blog route: general example without parallel routes.
-│   │  ├page.tsx                  # /blog main page (server component; lists posts)
-│   │  ├ _components/              # Blog-specific reusable UI (non-routed). No logic/process.
-│   │  │  ├ui─*.tsx               # Reusable UI (e.g., PostCard.tsx)
-│   │  │  └*.tsx                  # Feature UI (e.g., BlogSidebar.tsx)
-│   │  ├ _features/                # Blog-specific processing/rendering (colocation). Combine components; import to app.
-│   │  │  │                       # No nesting! Use children in app/. Client hooks OK; server OK. Keep clients small.
-│   │  │  └BlogFeature.tsx        # e.g., Post renderer (data fetching; minimal client)
-│   │  ├ _hooks/                   # Blog-specific hooks (colocation).
-│   │  │  └useBlog.ts             # e.g., usePosts (config types)
-│   │  ├ _actions/                 # Blog-specific server actions (colocation). Mutations like create post.
-│   │  │  ├actions.ts             # e.g., createPost(formData: FormData) { 'use server'; ... }
-│   │  │  └actions.test.ts        # Minimal tests; cover form validation/errors.
-│   │  └_config/                  # Blog-specific config (colocation). Initial objects/types.
-│   │      └blogConfig.ts         # e.g., Post schema with types
+│   ├ blog/                      # Route: /blog
+│   │  ├ page.tsx
+│   │  ├ [slug]/                  # Dynamic route: /blog/:slug
+│   │  │  └ page.tsx
+│   │  ├ _components/
+│   │  ├ _features/
+│   │  ├ _hooks/
+│   │  ├ _actions/
+│   │  └ _config/
 │   │
-│   ├layout.tsx                   # Root layout (server component)
-│   └page.tsx                     # Root page (/): server component; encapsulate client components below (e.g., in _features for minimal clients)
+│   ├ (root)/                    # Can be omitted, Route: /
+│   │  ├ page.tsx                # Root page (/)
+│   │  ├ _components/
+│   │  ├ _features/
+│   │  ├ _hooks/
+│   │  ├ _actions/
+│   │  └ _config/
+│   │
+|   ├ page.tsx                   # Fallback root page (if no (root)/)
+│   └ layout.tsx                 # Root layout
 │
-├─ components/                   # Global shared reusable UI (root level). No logic/process. Easy imports.
-│   ├ui─*.tsx                     # Shared UI (e.g., Button.tsx)
-│   └*.tsx                        # Shared features (e.g., AuthForm.tsx)
-│
-├─ hooks/                        # Global shared hooks (root level). Use config types.
-│   └useGlobal.ts                 # e.g., useAuth (server actions compatible)
-│
-├─ utils/                          # Global utilities/config (root level). Types for hooks/actions.
-│   ├actions.ts                   # Global server actions. 'use server' mutations (e.g., loginUser).
-│   ├config.ts                    # App-wide settings with types (inject to hooks)
-│   └utils.ts                     # General utils (e.g., formatDate)
-│
-├─ public/                       # Static assets
+├─ components/                   # Global shared UI
+├─ hooks/                        # Global shared hooks
+├─ utils/                        # Global utilities/config/actions/types
+│   └ types.ts                   # Global types (e.g., Result<T, E>)
+└─ public/                       # Static assets
+```
+
+---
+
+## Git Workflow
+
+### Basic
+
+- **Commit Format:** `<type>: <description>`
+- **Types:** feat, fix, refactor, chore, style, WIP
+
+### Rules
+
+- English, imperative mood (Add, Update, Fix)
+- Lowercase description, no period
+- Be specific and concise
+
+### Examples
+
+```
+feat: implement contact form with validation
+fix: resolve type error in dashboard hook
+refactor: simplify user authentication flow
 ```
