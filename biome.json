@@ -3,13 +3,19 @@
   "extends": [],
   "files": {
     "ignoreUnknown": true,
-    "includes": ["app/**/*", "components/**/*", "!test"]
+    "includes": ["app/**", "componets/**", "hooks/**", "utils/**"]
   },
   "linter": {
     "rules": {
       "recommended": true,
       "nursery": {
         "useSortedClasses": "off"
+      },
+      "a11y": {
+        "useSemanticElements": "off"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off"
       },
       "correctness": {
         "noUnusedImports": "warn",

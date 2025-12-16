@@ -1,0 +1,21 @@
+{
+  "name": "myapp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check",
+    "format": "biome format --write",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "type": "tsc --noEmit"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
