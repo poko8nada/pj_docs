@@ -22,6 +22,53 @@
 
 Only universal types (e.g., `Result<T, E>`) in `utils/types.ts`
 
+## State Management
+
+- **Derive, Don't Duplicate**: If state B can be computed from state A, compute B from A
+- **Pure Functions First**: Extract pure logic into testable functions. Isolate side effects.
+- **Tool Selection**: Use framework-appropriate stores (Zustand, Pinia, Nanostores, etc.)
+- **Server-driven frameworks**: State lives on server, HTML represents state
+
+## Composable Logic Design
+
+_Applies to: React Hooks, Vue Composables, Svelte Runes, Solid Primitives, etc._
+
+1. **Extract pure logic** - Separate business logic from framework code
+2. **Isolate side effects** - Keep I/O separate from pure logic
+3. **Accept state as arguments** - Make logic testable
+4. **Return computed values** - Return derived state and operations
+
+## Component Architecture Patterns
+
+### Pattern 1: Direct Import
+
+Components directly import stores/utilities/logic.
+
+**Use when:**
+
+- Simple, single-purpose components
+- No reuse needs
+- Small to medium complexity
+
+**Trade-offs:** Simple, less boilerplate | Harder to test, lower reusability
+
+### Pattern 2: Feature Layer + Presentational Components
+
+Feature layer handles logic, components receive props.
+
+**Use when:**
+
+- Reusable across contexts
+- Design systems/Storybook
+- Complex business logic
+- Clear server/client separation needed
+
+**Trade-offs:** Testable, reusable, clear separation | More boilerplate, can be over-engineering
+
+### Decision
+
+Start with **Pattern 1**. Refactor to **Pattern 2** when needed for reuse, testing, or complexity.
+
 ## Error Handling
 
 ### Never use exceptions for control flow
@@ -29,8 +76,8 @@ Only universal types (e.g., `Result<T, E>`) in `utils/types.ts`
 ### Use Result<T, E> Pattern for:
 
 - Internal logic and domain functions
-- Server Actions returning success/error
-- Hooks managing operation outcomes
+- Server Actions/route handlers returning success/error
+- Hooks/Composables managing operations
 
 ### Use try-catch for:
 
@@ -49,8 +96,7 @@ function parseId(input: unknown): Result<string, "Invalid ID"> {
     : { ok: false, error: "Invalid ID" };
 }
 
-// Server Action
-("use server");
+// Server Action (example)
 export async function createPost(
   formData: FormData,
 ): Promise<Result<Post, string>> {
@@ -66,17 +112,20 @@ export async function createPost(
   }
 }
 
-// Hook
+// Hook/Composable (example)
 function useCreatePost() {
   const [result, setResult] = useState<Result<Post, string> | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const create = async (formData: FormData) => {
+    setIsLoading(true);
     const res = await createPost(formData);
     setResult(res);
+    setIsLoading(false);
     return res;
   };
 
-  return { create, result };
+  return { create, result, isLoading };
 }
 ```
 
@@ -98,8 +147,27 @@ function useCreatePost() {
 
 - No E2E tests
 - Test business logic and critical functions only
+- When connecting to API, tests for both normal and abnormal cases
 - Skip UI components and trivial code
 - Place `*.test.ts(x)` adjacent to source files
+
+### What to Test
+
+```typescript
+// ✅ Test: Business logic
+describe("calculateMetrics", () => {
+  it("should calculate correctly with valid data", () => {});
+  it("should handle edge cases", () => {});
+});
+
+// ✅ Test: API calls
+describe("fetchUser", () => {
+  it("should return user on success", async () => {});
+  it("should return error on failure", async () => {});
+});
+
+// ❌ Don't test: UI components, trivial functions
+```
 
 ### Commands
 

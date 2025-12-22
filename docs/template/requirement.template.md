@@ -21,16 +21,16 @@
 
 ### MVP
 
-- **フロントエンド**: [Next.js / React / など]
+- **フロントエンド**: [Next.js / React / htmx / など]
 - **バックエンド**: [なし / Hono / Express / など]
-- **ホスティング**: [Vercel / Cloudflare Workers / など]
-- **認証**: [なし / Clerk / Auth0 / など]
-- **状態管理**: [React Context / Zustand / など]
-- **スタイリング/コンポーネント**: [Tailwind CSS / CSS Modules / など]
+- **ホスティング**: [Vercel / Cloudflare Workers / Cloud Run / など]
+- **認証**: [なし / Clerk / Auth0 /　better auth / など]
+- **状態管理**: [React Context / Zustand / nuqs / など]
+- **スタイリング/コンポーネント**: [Tailwind CSS / shadcn / react aria / など]
 - **テスト**: [Vitest / Testing Library / など]
 - **ORM+**: [なし / Drizzle ORM / Prisma / など]
-- **データベース**: [なし / PostgreSQL / など]
-- **その他**: [使用する主要ライブラリ・API]
+- **データベース**: [なし / D1 / Turso / Supabase / Neon /など]
+- **その他**: [その他、使用する主要ライブラリ・API]
 
 ### PRODUCT v1(製品版)
 
@@ -100,7 +100,7 @@
 **NFR-04: テスタビリティ**
 
 - [テスト方針]
-- 例: ビジネスロジックと重要な関数のみテスト対象。UIコンポーネントや自明なコードはテスト不要。
+- 例: ビジネスロジックと重要な関数のみテスト対象。APIとの接続は、正常系と異常系どちらもテストを行う。UIコンポーネントや自明なコードはテスト不要。
 
 **NFR-05: セキュリティ**
 
@@ -154,7 +154,7 @@ project-name/
    └─ [assets]
 ```
 
-**Note:** [For project structure and component organization, refer to your project's architecture guide in `arch/`.]
+**Note:** [プロジェクト構造とコンポーネントの構成については、`arch/` ディレクトリ内のプロジェクトアーキテクチャガイドを参照する。]
 
 ---
 
@@ -167,7 +167,106 @@ project-name/
 
 ---
 
-## 7. 備考・参考資料 (Notes & References)
+## 7. 画面設計 (Screen Design)
+
+### 7.1. 画面一覧 (Screen List)
+
+| No  | 画面名   | URLパス     | 機能概要               | 備考 |
+| --- | -------- | ----------- | ---------------------- | ---- |
+| 001 | ホーム   | `/`         | サービスのトップページ |      |
+| XXX | [画面名] | `[URLパス]` | [機能]                 |      |
+
+### 7.2. 画面フロー図 (Screen Flow Diagram)
+
+[画面フロー図の挿入場所]
+
+### 7.3. ワイヤーフレーム・モックアップ (Wireframes & Mockups)
+
+[ワイヤーフレーム・モックアップの挿入場所]
+
+**Note**: 画面フロー図、ワイヤーフレーム・モックアップは、簡易的なもので構わない。またFigmaやMiroなどの外部ツールで管理している場合、そのリンクを記載する。
+
+---
+
+## 8. デザインシステム (Design System)
+
+### 8.1. カラーパレット (Color Palette)
+
+**カラーモード対応**
+
+- ライトモード: [必須 / 不要]
+- ダークモード: [必須 / 不要 / オプション]
+- システム設定追従: [あり / なし]
+
+**ライトモード**
+
+_プライマリカラー_
+
+- Primary: `#000000` - [用途: メインアクション、ブランドカラー]
+- Primary hover: `#000000` - [ホバー時の色]
+
+_セカンダリカラー_
+
+- Secondary: `#000000` - [用途: セカンダリアクション]
+- Secondary hover: `#000000` - [ホバー時の色]
+
+_背景・テキストカラー_
+
+- Background: `#FFFFFF` - [背景色]
+- Surface: `#F5F5F5` - [カード・パネル背景]
+- Text primary: `#1A1A1A` - [メインテキスト]
+- Text secondary: `#666666` - [サブテキスト]
+
+_セマンティックカラー_
+
+- Success: `#10B981` - [成功状態、完了]
+- Warning: `#F59E0B` - [警告、注意]
+- Error: `#EF4444` - [エラー、削除]
+- Info: `#3B82F6` - [情報、ヘルプ]
+
+**ダークモード**（該当する場合）
+
+_プライマリカラー_
+
+- Primary: `#FFFFFF` - [用途: メインアクション、ブランドカラー]
+- Primary hover: `#E5E5E5` - [ホバー時の色]
+
+_セカンダリカラー_
+
+- Secondary: `#A0A0A0` - [用途: セカンダリアクション]
+- Secondary hover: `#B0B0B0` - [ホバー時の色]
+
+_背景・テキストカラー_
+
+- Background: `#0A0A0A` - [背景色]
+- Surface: `#1A1A1A` - [カード・パネル背景]
+- Text primary: `#E5E5E5` - [メインテキスト]
+- Text secondary: `#A0A0A0` - [サブテキスト]
+
+_セマンティックカラー_
+
+- Success: `#10B981` - [成功状態、完了]
+- Warning: `#F59E0B` - [警告、注意]
+- Error: `#EF4444` - [エラー、削除]
+- Info: `#3B82F6` - [情報、ヘルプ]
+
+**コントラスト比**
+
+- Text primary / Background: 4.5:1 以上（WCAG AA準拠）
+- Text secondary / Background: 4.5:1 以上
+- Interactive elements: 3:1 以上
+
+**実装パターン**
+
+- Tailwind の `dark:` バリアントを使用: `bg-white dark:bg-black`
+- `next-themes` などのライブラリでテーマ切り替え実装
+- システム設定追従の場合: `darkMode: 'media'` を使用
+
+**Note**: shadcn/ui などのコンポーネントライブラリを使用する場合、カラーのみカスタマイズし、タイポグラフィ・スペーシングは Tailwind / ライブラリのデフォルトを尊重する。
+
+---
+
+## 9. 備考・参考資料 (Notes & References)
 
 - [参考URL]
 - [デザインモックアップ]
