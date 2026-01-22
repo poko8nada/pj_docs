@@ -1,3 +1,8 @@
+---
+name: ui-design
+description: UI/UX design guidelines including Tailwind CSS, shadcn/ui, accessibility, and visual design principles. Use when designing interfaces, styling components, or working on accessibility.
+---
+
 # UI/UX Design Guidelines
 
 ## Core Principles

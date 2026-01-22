@@ -1,3 +1,8 @@
+---
+name: coding-standards
+description: TypeScript coding standards and best practices.  Use when implementing code, refactoring, writing tests, or reviewing code quality.
+---
+
 # Coding Standards
 
 ## Core Principles
@@ -150,6 +155,7 @@ function useCreatePost() {
 - When connecting to API, tests for both normal and abnormal cases
 - Skip UI components and trivial code
 - Place `*.test.ts(x)` adjacent to source files
+- Enable aliases using `vite-tsconfig-paths`
 
 ### What to Test
 
@@ -177,7 +183,3 @@ pnpm test *.test.tsx   # Run specific test
 ```
 
 ---
-
-## Architecture-Specific Guidelines
-
-For project structure and component organization, refer to your project's architecture guide in `arch/`.

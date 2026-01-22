@@ -1,3 +1,8 @@
+---
+name: hono-htmx-architecture
+description: Hono + HTMX architecture guidelines for Cloudflare Workers.  Use when developing server-rendered applications with Hono, HTMX, and Hono JSX.
+---
+
 # Hono + HTMX Architecture Guidelines
 
 ## Stack
