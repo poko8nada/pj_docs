@@ -1,3 +1,8 @@
+---
+name: nextjs-architecture
+description: Next.js 15+ App Router architecture guidelines including component patterns, state management with Zustand, server actions, and project structure.  Use when developing Next.js applications.
+---
+
 # Next.js Architecture Guidelines
 
 Always consult Context7 if you plan to deviate from these guidelines.

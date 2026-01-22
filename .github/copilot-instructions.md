@@ -26,16 +26,14 @@ When user input contains these keywords → **STOP & REQUEST APPROVAL**
 
 - Use pnpm for all package management
 - Consult Context7 MCP tools when needed
-- Use Next-devtools for Next.js development
-
----
 
 ## Git Workflow
 
-### Basic
+### Commit Format
 
-- **Commit Format:** `<type>: <description>`
-- **Types:** add, fix, remove, update, WIP
+`<type>: <description>`
+
+**Types:** add, fix, remove, update, WIP
 
 ### Rules
 
@@ -43,13 +41,14 @@ When user input contains these keywords → **STOP & REQUEST APPROVAL**
 - Lowercase description, no period
 - Be specific and concise
 
----
+## Reference Skills
 
-## Reference Documents
+For detailed guidelines, the following skills are available and will be loaded automatically when needed:
 
-For detailed guidelines, refer to:
-
-- [Planning Phase](planning.instructions.md)
-- [Coding Standards](coding.instructions.md)
-- [UI/UX Design](design.instructions.md)
-- [Next.js Architecture](arch/nextjs.instructions.md)
+| Skill                    | When Used                                             |
+| ------------------------ | ----------------------------------------------------- |
+| `coding-standards`       | Code implementation, refactoring, testing             |
+| `planning`               | Planning phase, requirement gathering, task breakdown |
+| `ui-design`              | UI/UX design, styling, accessibility                  |
+| `nextjs-architecture`    | Next.js App Router projects                           |
+| `hono-htmx-architecture` | Hono + HTMX + Cloudflare Workers projects             |
