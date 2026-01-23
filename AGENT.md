@@ -1,0 +1,1 @@
+CRITICAL: All implementation and modifications must adhere to the global rules defined in **[.github/copilot-instructions.md](.github/copilot-instructions.md)**. Review the instructions file before proceeding.
