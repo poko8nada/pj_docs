@@ -63,7 +63,7 @@ Always consult Context7 before suggesting new libraries or frameworks.
 
 ### 1. Requirement Gathering
 
-- Use `docs/template/requirement.template. md`
+- Use `docs/template/requirement.template.md`
 - Define user stories and acceptance criteria
 - Identify technical constraints
 - **Get approval** before proceeding
