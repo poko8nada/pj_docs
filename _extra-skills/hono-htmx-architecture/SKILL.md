@@ -5,6 +5,8 @@ description: Hono + HTMX architecture guidelines for Cloudflare Workers.  Use wh
 
 # Hono + HTMX Architecture Guidelines
 
+**NOTE**: This is "Hono + HTMX", NOT "HonoX".
+
 ## Stack
 
 - **Framework**: Hono

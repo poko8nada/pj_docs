@@ -7,7 +7,29 @@
 - Use concise, telegraphic style - minimize volume
 - Avoid unnecessary explanations and emojis
 
+## Documentation
+
+- `docs/requirement-*.md` for requirements, specifications, and constraints
+- `docs/task-*.md` for task breakdowns and progress
+
+## Reference Skills
+
+- Skills are useful for specific contexts.
+- `.github/skills/*/SKILL.md` files define each skill.
+
+| Skill                 | When Used                                                           |
+| --------------------- | ------------------------------------------------------------------- |
+| `coding-standards`    | Code implementation, refactoring, testing                           |
+| `context7-mcp`        | Access up-to-date, version-specific official documentation and code |
+| `honox-architecture`  | HonoX development, routing, Islands, component patterns             |
+| `nextjs-architecture` | Next.js App Router projects                                         |
+| `planning`            | Planning phase, requirement gathering, task breakdown               |
+| `playwright-mcp`      | Browser automation, web interaction, Playwright MCP                 |
+| `ui-design`           | UI/UX design, styling, accessibility                                |
+
 ## Task Execution Workflow
+
+**For every request**: Silently evaluate which skill(s) would help most. Load matching SKILL.md file(s) into context if relevant.
 
 1. List tasks, files and what you do → **Get approval**
 2. Execute implementation
@@ -24,8 +46,7 @@ When user input contains these keywords → **STOP & REQUEST APPROVAL**
 
 ## Tools
 
-- Use **pnpm** for all package management
-- Consult Context7 MCP tools when needed
+Use **pnpm** for all package management
 
 ## Git Workflow
 
@@ -40,15 +61,3 @@ When user input contains these keywords → **STOP & REQUEST APPROVAL**
 - English, imperative mood (Add, Update, Fix)
 - Lowercase description, no period
 - Be specific and concise
-
-## Reference Skills
-
-For detailed guidelines, the following skills are available and will be loaded automatically when needed:
-
-| Skill                    | When Used                                             |
-| ------------------------ | ----------------------------------------------------- |
-| `coding-standards`       | Code implementation, refactoring, testing             |
-| `planning`               | Planning phase, requirement gathering, task breakdown |
-| `ui-design`              | UI/UX design, styling, accessibility                  |
-| `nextjs-architecture`    | Next.js App Router projects                           |
-| `hono-htmx-architecture` | Hono + HTMX + Cloudflare Workers projects             |
