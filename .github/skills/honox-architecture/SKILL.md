@@ -477,7 +477,7 @@ export default createRoute(c => {
 Vite provides fast HMR during development:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Changes to components and routes are reflected instantly in browser.
@@ -486,13 +486,13 @@ Changes to components and routes are reflected instantly in browser.
 
 ```bash
 # Build both client and server
-npm run build
+pnpm run build
 
 # Preview production build
-npm run preview
+pnpm run preview
 
 # Deploy to Cloudflare Workers
-npm run deploy
+pnpm run deploy
 ```
 
 ## File Naming Conventions
@@ -518,12 +518,18 @@ app/
 │  ├─ index.tsx                 # Home page
 │  ├─ posts/
 │  │  ├─ [id].tsx              # Dynamic post page
-│  │  └─ $post-like.tsx        # Island for likes
+│  │  └─ $post-like.tsx        # Island for inreactive component
 │  ├─ api/
 │  │  └─ hello.ts              # JSON endpoint
 │  ├─ _renderer.tsx            # Global layout
 │  ├─ _404.tsx                 # Not found
 │  └─ _error.tsx               # Error page
+├─ components/                  # Shared server components
+│  └─ header.tsx
+├─ utils/                       # Utilities
+│  └─ types.ts                 # Shared types
+├─ lib/                         # Shared libraries
+│  └─ fetcher.ts               # Data fetching utilities
 ├─ client.ts                    # Client entry
 ├─ server.ts                    # Server entry
 └─ global.d.ts                  # Type definitions
