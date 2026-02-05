@@ -1,4 +1,4 @@
-**This is a template. Fill in the [], duplicate or delete the template parts as needed.**
+**This is a template. Fill in the [] or ``, duplicate or delete the template parts as needed.**
 
 # [プロジェクト名] 要件定義書 (requirement.md)
 
@@ -39,6 +39,11 @@
   - `deploy`: [デプロイコマンド]
   - `test`: [テスト実行コマンド]
   - `lint`: [Lint/フォーマット実行コマンド]
+  - `format`: [コードフォーマット実行コマンド]
+  - `typecheck`: [型チェックコマンド（該当する場合）]
+  - `db:migrate`: [データベースマイグレーションコマンド（該当する場合）]
+  - `db:seed`: [データベースシードコマンド（該当する場合）]
+  - `generate`: [コード生成コマンド（該当する場合）]
 - **その他**: [その他、使用する主要ライブラリ・API]
 
 ### PRODUCT v1(製品版)
@@ -99,7 +104,7 @@
 **NFR-02: 互換性**
 
 - [ブラウザ・デバイス対応]
-- 例: Chrome 90+, Firefox 88+, Safari 14+
+- 例: Chrome latest, Firefox latest, Safari latest
 
 **NFR-03: アクセシビリティ**
 
@@ -132,38 +137,61 @@
 
 ### 5.1. フェーズ1: MVP実装時のディレクトリ構成
 
-```
-project-name/
-├─ app/                             # Next.jsの場合
-│  ├─ layout.tsx                    # FR-XX: Root layout
-│  ├─ page.tsx                      # FR-XX: Top page
-│  ├─ globals.css
-│  ├─ _components/                  # Route-specific UI components
-│  │  ├─ ComponentA.tsx            # FR-XX: [機能説明]
-│  │  └─ ComponentB.tsx            # FR-XX: [機能説明]
-│  ├─ _features/                    # Route-specific features
-│  │  └─ FeatureName/              # Feature単位でコロケーション
-│  │     ├─ index.tsx              # FR-XX: Feature統合UI
-│  │     ├─ useFeatureLogic.ts     # FR-XX: Featureロジック
-│  │     └─ useFeatureLogic.test.ts
-│  └─ _hooks/                       # Route-specific hooks
-│     ├─ useHookA.ts               # FR-XX: [機能説明]
-│     └─ useHookA.test.ts
-│
-├─ utils/                            # Global utilities
-│  ├─ types.ts                      # Global types (Result<T, E>)
-│  ├─ utilityFunction.ts           # FR-XX: [機能説明]
-│  └─ utilityFunction.test.ts
-│
-├─ components/                       # Global shared UI
-│  └─ ui/                           # Atomic UI (shadcn/ui, etc.)
-│
-├─ hooks/                            # Global shared hooks
-└─ public/                           # Static assets
-   └─ [assets]
-```
+- 例: Next.js プロジェクトの場合
 
-**Note:** [プロジェクト構造とコンポーネントの構成については、`arch/` ディレクトリ内のプロジェクトアーキテクチャガイドを参照する。]
+```
+app/
+├── dashboard/
+│   ├── @modal/              # Parallel route
+│   ├── @search/             # Parallel route
+│   ├── page.tsx             # Server component
+│   ├── loading.tsx          # Loading UI (auto-wrapped in Suspense)
+│   ├── error.tsx            # Error boundary
+│   ├── _components/         # Route-specific UI
+│   ├── _features/           # Route-specific logic
+│   ├── _hooks/              # Shared across route features
+│   ├── _actions/            # Route-specific server actions
+│   ├── _lib/                # Route-specific business logic
+│   │   ├── userLogic.ts
+│   │   └── userLogic.test.ts
+│   ├── _store/              # Route-specific Zustand stores
+│   │   └── dashboardStore.ts
+│   └── _config/             # Route-specific config
+├── blog/
+│   ├── [slug]/              # Dynamic route
+│   ├── page.tsx
+│   ├── loading.tsx
+│   ├── error.tsx
+│   ├── _components/
+│   ├── _features/
+│   ├── _hooks/
+│   ├── _actions/
+│   ├── _lib/
+│   └── _config/
+├── page.tsx                # Root page
+├── loading.tsx             # Root loading
+├── error.tsx               # Root error boundary
+└── layout.tsx              # Root layout
+
+components/                # Global shared UI
+├── ui/                     # Atomic UI pieces (shadcn/ui, primitives)
+├── layouts/                # Layout components (PageLayout, SectionLayout)
+└── ...                     # Custom global components
+
+hooks/                     # Global shared hooks
+lib/                       # Global business logic
+├── userActions.ts
+├── userActions.test.ts
+├── auth.ts
+└── api.ts
+store/                     # Global Zustand stores
+├── userStore.ts
+└── appStore.ts
+utils/                     # Pure utilities only (NOT business logic)
+├── format.ts              # Date formatting, string manipulation, etc.
+└── types.ts               # Global types only (e.g., Result<T,E>)
+public/                    # Static assets
+```
 
 ---
 
@@ -193,7 +221,7 @@ project-name/
 
 [ワイヤーフレーム・モックアップの挿入場所]
 
-**Note**: 画面フロー図、ワイヤーフレーム・モックアップは、簡易的なもので構わない。またFigmaやMiroなどの外部ツールで管理している場合、そのリンクを記載する。
+**Note**: It is enough to providee low-fidelity wireframes or figma links.
 
 ---
 
@@ -201,13 +229,16 @@ project-name/
 
 ### 8.1. カラーパレット (Color Palette)
 
-**カラーモード対応**
+**カラー対応**
 
-- ライトモード: [必須 / 不要]
-- ダークモード: [必須 / 不要 / オプション]
-- システム設定追従: [あり / なし]
+- カラーモード: [シングルカラー / デュアルカラー]
 
-**ライトモード**
+- デュアルカラーの場合:
+  - ライトモード: [必須 / 不要]
+  - ダークモード: [必須 / 不要 / オプション]
+  - システム設定追従: [あり / なし]
+
+**ライトモード** or **シングルカラー**
 
 _プライマリカラー_
 
@@ -233,7 +264,7 @@ _セマンティックカラー_
 - Error: `#EF4444` - [エラー、削除]
 - Info: `#3B82F6` - [情報、ヘルプ]
 
-**ダークモード**（該当する場合）
+**ダークモード** If applicable
 
 _プライマリカラー_
 
@@ -271,7 +302,7 @@ _セマンティックカラー_
 - `next-themes` などのライブラリでテーマ切り替え実装
 - システム設定追従の場合: `darkMode: 'media'` を使用
 
-**Note**: shadcn/ui などのコンポーネントライブラリを使用する場合、カラーのみカスタマイズし、タイポグラフィ・スペーシングは Tailwind / ライブラリのデフォルトを尊重する。
+**Note**: If use design system libraries like shadcn/ui, describe how to customize colors using their theming approach.
 
 ---
 

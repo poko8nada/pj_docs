@@ -23,7 +23,7 @@ Routes are automatically generated from the `app/routes/` directory structure:
 
 - `app/routes/index.tsx` → `/`
 - `app/routes/posts/[id].tsx` → `/posts/:id` (dynamic)
-- `app/routes/api/hello.ts` → `/api/hello`
+- `app/routes/api/images/[...imageId].ts` → `/api/images/:imageId`
 - `app/routes/_renderer.tsx` → Global layout (NOT a route)
 - `app/routes/_404.tsx` → Custom 404 handler
 - `app/routes/_error.tsx` → Custom error handler
@@ -35,24 +35,6 @@ Only interactive components require client-side JavaScript:
 - **Islands** (`app/islands/` or `$` prefix): Components hydrated on client (use `useState`, event handlers)
 - **Server Components** (pages/layouts): Plain JSX, server-rendered only
 - **Zero JS by Default**: Pages without Islands have zero JavaScript sent to client
-
-### Component Placement
-
-```
-app/
-├─ islands/
-│  ├─ counter.tsx          # Island: auto-hydrated
-│  └─ like-button.tsx      # Island: auto-hydrated
-├─ routes/
-│  ├─ $custom-island.tsx   # Island: $ prefix makes it hydrated
-│  ├─ [id].tsx             # Dynamic route: server component
-│  ├─ index.tsx            # Home page: server component
-│  ├─ _renderer.tsx        # Global layout (required)
-│  ├─ _404.tsx             # 404 handler
-│  ├─ _error.tsx           # Error handler
-│  └─ api/
-│     └─ endpoint.ts       # API route
-```
 
 ## Component Types
 
@@ -82,8 +64,9 @@ export default createRoute(c => {
 ### 2. Island Components (Client)
 
 Use `useState`, event handlers, client-side logic.
+The `$` prefix marks this component as an Island, ensuring it's hydrated on the client.
 
-**In `app/islands/` directory:**
+**In `app/islands/` directory or `$` prefix in routes:**
 
 ```typescript
 import { useState } from 'hono/jsx'
@@ -100,24 +83,6 @@ export default function Counter() {
   )
 }
 ```
-
-**With `$` prefix in routes:**
-
-```typescript
-// app/routes/posts/$post-like.tsx
-import { useState } from 'hono/jsx'
-
-export default function PostLike() {
-  const [count, setCount] = useState(0)
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Like ({count})
-    </button>
-  )
-}
-```
-
-The `$` prefix marks this component as an Island, ensuring it's hydrated on the client.
 
 ### 3. API Routes
 
@@ -497,15 +462,16 @@ pnpm run deploy
 
 ## File Naming Conventions
 
-| Pattern          | Purpose          | Example                              |
-| ---------------- | ---------------- | ------------------------------------ |
-| `index.tsx`      | Route handler    | `/posts/index.tsx` → `/posts/`       |
-| `[param].tsx`    | Dynamic segment  | `/posts/[id].tsx` → `/posts/123`     |
-| `$component.tsx` | Island in routes | `/posts/$like.tsx` (hydrated)        |
-| `_renderer.tsx`  | Global layout    | Must be in `app/routes/`             |
-| `_404.tsx`       | 404 handler      | Custom not-found page                |
-| `_error.tsx`     | Error handler    | Custom error page                    |
-| `.ts`            | API route        | `/api/endpoint.ts` → `/api/endpoint` |
+| Pattern          | Purpose          | Example                               |
+| ---------------- | ---------------- | ------------------------------------- |
+| `index.tsx`      | Route handler    | `/posts/index.tsx` → `/posts/`        |
+| `[param].tsx`    | Dynamic segment  | `/posts/[id].tsx` → `/posts/123`      |
+| `[...path].tsx`  | Catch-all route  | `/files/[...path].tsx` → `/files/a/b` |
+| `$component.tsx` | Island in routes | `/posts/$like.tsx` (hydrated)         |
+| `_renderer.tsx`  | Global layout    | Must be in `app/routes/`              |
+| `_404.tsx`       | 404 handler      | Custom not-found page                 |
+| `_error.tsx`     | Error handler    | Custom error page                     |
+| `.ts`            | API route        | `/api/endpoint.ts` → `/api/endpoint`  |
 
 ## Project Structure Summary
 
@@ -515,24 +481,39 @@ app/
 │  ├─ counter.tsx
 │  └─ [other-interactive-components]
 ├─ routes/
-│  ├─ index.tsx                 # Home page
+│  ├─ index.tsx               # Home page
 │  ├─ posts/
-│  │  ├─ [id].tsx              # Dynamic post page
-│  │  └─ $post-like.tsx        # Island for inreactive component
+│  │  ├─ [id].tsx            # Dynamic post page
+│  │  └─ $post-like.tsx      # Island for inreactive component
 │  ├─ api/
-│  │  └─ hello.ts              # JSON endpoint
-│  ├─ _renderer.tsx            # Global layout
-│  ├─ _404.tsx                 # Not found
-│  └─ _error.tsx               # Error page
-├─ components/                  # Shared server components
+│  │  └─ hello.ts            # JSON endpoint
+│  ├─ _renderer.tsx           # Global layout
+│  ├─ _404.tsx                # Not found
+│  └─ _error.tsx              # Error page
+├─ components/                 # Shared server components
 │  └─ header.tsx
-├─ utils/                       # Utilities
-│  └─ types.ts                 # Shared types
-├─ lib/                         # Shared libraries
-│  └─ fetcher.ts               # Data fetching utilities
-├─ client.ts                    # Client entry
-├─ server.ts                    # Server entry
-└─ global.d.ts                  # Type definitions
+├─ utils/                      # Utilities
+│  └─ types.ts                # Shared types
+├─ lib/                        # Shared libraries
+│  └─ fetcher.ts              # Data fetching utilities
+├─ client.ts                   # Client entry
+├─ server.ts                   # Server entry
+└─ global.d.ts                 # Type definitions
+
+public/
+├─ favicon.ico
+└─ [static-assets]       # Static files (images, fonts, etc.)
+
+seeds/                     # Seed data scripts and assets ( for local dev )
+├── r2/                 # R2 seed files
+├── d1/                 # d1 seed files
+├── seed-local-r2.mjs   # R2 seeding script
+├── seed-local-d1.mjs   # D1 seeding script
+└── reset-local.mjs     # Reset local environment script
+
+wrangler.jsonc
+vite.config.ts
+package.json
 ```
 
 ## References
