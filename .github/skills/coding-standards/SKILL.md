@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: TypeScript coding standards and best practices.  Use when implementing code, refactoring, writing tests, or reviewing code quality.
+description: Core Skill. TypeScript coding standards and best practices. Use when implementing code, refactoring, writing tests, or reviewing code quality.
 ---
 
 # Coding Standards
@@ -12,6 +12,7 @@ description: TypeScript coding standards and best practices.  Use when implement
 - Algebraic Data Types for type design
 - Early return pattern - avoid deep nesting
 - Handle errors first
+- Decompose long (more than 80 lines of code) components and functions into multiple smaller components and functions.
 - **Imports**: Same directory → `./`. Cross-directory or global → `@/` aliases
 
 ## Type Safety
@@ -145,41 +146,3 @@ function useCreatePost() {
 
 - Usage examples (use tests instead)
 - Redundant descriptions
-
-## Testing Policy
-
-### Minimal Unit Tests Only
-
-- No E2E tests
-- Test business logic and critical functions only
-- When connecting to API, tests for both normal and abnormal cases
-- Skip UI components and trivial code
-- Place `*.test.ts(x)` adjacent to source files
-- Enable aliases using `vite-tsconfig-paths`
-
-### What to Test
-
-```typescript
-// ✅ Test: Business logic
-describe("calculateMetrics", () => {
-  it("should calculate correctly with valid data", () => {});
-  it("should handle edge cases", () => {});
-});
-
-// ✅ Test: API calls
-describe("fetchUser", () => {
-  it("should return user on success", async () => {});
-  it("should return error on failure", async () => {});
-});
-
-// ❌ Don't test: UI components, trivial functions
-```
-
-### Commands
-
-```bash
-pnpm test              # Run all tests
-pnpm test *.test.tsx   # Run specific test
-```
-
----
