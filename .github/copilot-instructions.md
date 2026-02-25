@@ -20,28 +20,24 @@
 - The ability to think about what is needed and why it is needed at a **meta** level
 
 <<<<<<< HEAD
+
 - commit, push, git add
 - create, modify, delete, fix, refactor
 - build, deploy
-||||||| 744493e
 - commit, push, git add
 - create, modify, delete, fix, refactor
 - test, build, deploy
-=======
+
 ## Skills
->>>>>>> origin/develop
 
 ### The mindset for using skills
 
-<<<<<<< HEAD
 Use **pnpm** for all package management
-||||||| 744493e
+
 - Use pnpm for all package management
 - Consult Context7 MCP tools when needed
-=======
 - Quietly evaluate which skills to combine to solve each challenge, for every request.
 - It's okay if it takes time. Don't rush; prioritize the depth of your thinking.
->>>>>>> origin/develop
 
 ### Skill Categories
 
