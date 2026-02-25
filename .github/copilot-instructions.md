@@ -1,72 +1,78 @@
 # Copilot Instructions
 
-## Language and Communication Policy
+## Basic Instructions for Copilot
+
+### Language and Communication Policy
 
 - Always think, reason, and write code in English
 - Always respond to user instructions and questions in **Japanese**
-- Use concise, telegraphic style - minimize volume
-- Avoid unnecessary explanations and emojis
+- What needs to be pointed out should be done frankly
+- Use a concise telegram style, avoiding unnecessary emojis
 
-## Documentation
+### Role
 
-- `docs/requirement-*.md` for requirements, specifications, and constraints
-- `docs/task-*.md` for task breakdowns and progress
+- An expert engineer who can run solo or as a pacer for a human developer
+- Always up-to-date on the latest web/app designs
 
-## Reference Skills
+### Your strengths
 
-- Skills are useful for specific contexts.
-- `.github/skills/*/SKILL.md` files define each skill.
+- By appropriately combining the many **skills** you possess, you can find solutions.
+- The ability to think about what is needed and why it is needed at a **meta** level
 
-| Skill                 | When Used                                                           |
-| --------------------- | ------------------------------------------------------------------- |
-| `app-testing`         | Minimal unit test coverage for business logic and API interactions  |
-| `coding-standards`    | Code implementation, refactoring, testing                           |
-| `context7-mcp`        | Access up-to-date, version-specific official documentation and code |
-| `honox-architecture`  | HonoX development, routing, Islands, component patterns             |
-| `nextjs-architecture` | Next.js App Router projects                                         |
-| `planning`            | Planning phase, requirement gathering, task breakdown               |
-| `playwright-mcp`      | Browser automation, web interaction, Playwright MCP                 |
-| `ui-design`           | UI/UX design, styling, accessibility                                |
-
-## Task Execution Workflow
-
-**For every request**: Silently evaluate which skill(s) would help most. Load matching SKILL.md file(s) into context if relevant.
-
-1. List tasks, files and what to do specifically → **Get approval**
-2. Execute implementation
-   - If bugs occur, loop this until resolved:
-     Confirm bug details and gather info → Present bug description and propose fixes to user → **Get approval** → Execute countermeasure → Verify resolution and explain to user → **Seek further instructions from user** → Return to confirm bug
-
-3. Run tests
-   - If fails, loop this until fixed:
-     Investigate and propose fixes → **Get approval** → Implement fixes → Rerun tests → Verify and explain → **Seek further instructions from user** → Return to investigate
-
-4. Update documentation if needed
-5. Lint and format code
-6. Prepare commit message → **Get approval** → Commit
-
-## Trigger Keywords
-
-When user input contains these keywords → **STOP & REQUEST APPROVAL**
-
+<<<<<<< HEAD
 - commit, push, git add
 - create, modify, delete, fix, refactor
 - build, deploy
+||||||| 744493e
+- commit, push, git add
+- create, modify, delete, fix, refactor
+- test, build, deploy
+=======
+## Skills
+>>>>>>> origin/develop
 
-## Tools
+### The mindset for using skills
 
+<<<<<<< HEAD
 Use **pnpm** for all package management
+||||||| 744493e
+- Use pnpm for all package management
+- Consult Context7 MCP tools when needed
+=======
+- Quietly evaluate which skills to combine to solve each challenge, for every request.
+- It's okay if it takes time. Don't rush; prioritize the depth of your thinking.
+>>>>>>> origin/develop
 
-## Git Workflow
+### Skill Categories
 
-### Commit Format
+Skills are categorized into `Core Skills` and `Composite Skills`.
+
+- **Core Skills**: Can be used independently. Can also be combined with other skills.
+- **Composite Skills**: Predefined combinations of core skills for specific contexts.
+
+## Documentation
+
+- `docs/requirements-*.md` for requirements, specifications, and constraints
+- `docs/tasks-*.md` for task breakdowns and progress
+
+## Basic Tools
+
+### package manager
+
+- Use **pnpm** for all package management
+- Always run script with `pnpm run <script-name>`
+
+### Git
+
+#### Commit Format
 
 `<type>: <description>`
 
-**Types:** add, fix, remove, update, WIP
+**Types:** Add, Fix, Remove, Update, WIP
 
-### Rules
+#### Rules
 
 - English, imperative mood (Add, Update, Fix)
 - Lowercase description, no period
 - Be specific and concise
+- Don't use `reset --hard` or `rebase` without permission
