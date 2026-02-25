@@ -15,10 +15,10 @@
         "timeoutSec": 10
       }
     ],
-    "subagentStop": [
+    "preToolUse": [
       {
         "type": "command",
-        "bash": "afplay /System/Library/Sounds/Glass.aiff",
+        "bash": ".github/hooks/notify-on-ask.sh",
         "timeoutSec": 10
       }
     ]
