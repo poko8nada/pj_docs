@@ -33,13 +33,7 @@
 - 実行時検証: [タスク完了を判断する基準]
 - 自動検証: [タスク完了を判断する基準]
 
-<<<<<<< HEAD
 **Note:** This is a task template. Duplicate or delete as needed.
-||||||| 744493e
-### Task 2
-=======
-## [タスク名(タスク1などの数字は使わない) 例: 基本的なページ構成の実装]
->>>>>>> origin/develop
 
 ### FR-XX: [機能要求の要約]
 
