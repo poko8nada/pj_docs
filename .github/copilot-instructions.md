@@ -28,6 +28,7 @@
 - Project overview → `.github/skills/overview/SKILL.md`
 - Specification → `.github/skills/spec/SKILL.md`
 - Architecture decision → `.github/skills/adr/SKILL.md`
+- Project documentation bootstrap → `.github/skills/project-doc-bootstrap/SKILL.md`
 - Issue management → `.github/skills/issue/SKILL.md`
 - New feature → `.github/skills/new-feature/SKILL.md`
 - Coding standards → `.github/skills/coding-standards/SKILL.md`

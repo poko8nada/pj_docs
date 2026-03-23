@@ -53,6 +53,7 @@ See [.github/copilot-instructions.md](.github/copilot-instructions.md) for agent
 │ ├── overview/SKILL.md
 │ ├── spec/SKILL.md
 │ ├── adr/SKILL.md
+│ ├── project-doc-bootstrap/SKILL.md
 │ ├── new-feature/SKILL.md
 │ └── issue/SKILL.md
 └── hooks/
