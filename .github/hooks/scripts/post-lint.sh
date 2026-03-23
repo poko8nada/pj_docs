@@ -1,17 +1,25 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
 
-export PATH="$HOME/.local/share/pnpm:$HOME/.nvm/versions/node/$(node --version 2>/dev/null || echo 'current')/bin:/usr/local/bin:/usr/bin:/bin:./node_modules/.bin:$PATH"
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$HOME/.local/share/pnpm:./node_modules/.bin:$PATH"
 
 INPUT=$(cat)
+TOOL_NAME=$(echo "$INPUT" | jq -r '.toolName')
+TOOL_ARGS=$(echo "$INPUT" | jq -r '.toolArgs')
 
-TOOL_NAME=$(echo "$INPUT" | jq -r '.toolName // empty')
+case "$TOOL_NAME" in
+  edit|create|apply_patch) ;;
+  *) exit 0 ;;
+esac
 
-if [ "$TOOL_NAME" != "edit" ] && [ "$TOOL_NAME" != "create" ]; then
-  exit 0
-fi
-
-FILE=$(echo "$INPUT" | jq -r '.toolArgs.path // empty' 2>/dev/null || echo "")
+# apply_patchはパッチ文字列からパスを抽出、edit/createはJSONから取得
+case "$TOOL_NAME" in
+  apply_patch)
+    FILE=$(echo "$TOOL_ARGS" | grep -oE 'Update File: \S+' | awk '{print $NF}')
+    ;;
+  *)
+    FILE=$(echo "$TOOL_ARGS" | jq -r '.path // empty' 2>/dev/null || echo "")
+    ;;
+esac
 
 case "$FILE" in
   *.ts|*.tsx|*.js|*.jsx) ;;
