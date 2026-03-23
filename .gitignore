@@ -1,3 +1,17 @@
-.DS_Store
+node_modules/
+dist/
+*.log
+*.tgz
+*.cache
+*.env
+*.env.*
+*.swp
+*.swo
+*.orig
+*.rej
+*.tmp
+*.bak
+*.swp
+*.DS_Store
 
 .copilot alias

@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "indentStyle": "space",
+  "indentWidth": 2,
+  "lineWidth": 80,
+  "singleQuote": true,
+  "jsxQuoteStyle": "single",
+  "semicolons": "asNeeded",
+  "arrowParentheses": "asNeeded",
+  "formatWithErrors": true,
+  "ignorePatterns": ["*md"],
+  "printWidth": 100,
+  "useTabs": false,
+  "semi": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "always"
+}
