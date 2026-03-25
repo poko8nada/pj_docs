@@ -24,6 +24,8 @@ in_cwd() {
   local path="$1"
   case "$path" in
     "$CWD"/*|"$CWD") return 0 ;;
+    "$HOME/.copilot"/*) return 0 ;;
+    "$HOME/.agent"/*) return 0 ;;
     *) return 1 ;;
   esac
 }
