@@ -4,7 +4,7 @@
     "preToolUse": [
       {
         "command": ".cursor/hooks/pre-guard.sh",
-        "matcher": "Shell|Read|Write|Delete",
+        "matcher": ".*",
         "failClosed": true,
         "timeout": 10
       }

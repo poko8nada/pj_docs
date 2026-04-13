@@ -1,6 +1,7 @@
 #!/bin/bash
 
-LOG="$HOME/.cursor/hooks-debug.log"
+LOG_DIR="$HOME/.cursor/hooks-logs"
+LOG="$LOG_DIR/$(date '+%Y-%m-%d').log"
 
 INPUT=$(cat)
 
